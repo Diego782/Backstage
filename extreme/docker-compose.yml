@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: backstage
+      POSTGRES_PASSWORD: backstage
+      POSTGRES_DB: backstage
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U backstage']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backstage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '7007:7007'
+    environment:
+      # PostgreSQL
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: backstage
+      POSTGRES_PASSWORD: backstage
+
+      # AWS Credentials - Account 1
+      AWS_ACCOUNT_1_ACCESS_KEY_ID: ${AWS_ACCOUNT_1_ACCESS_KEY_ID}
+      AWS_ACCOUNT_1_SECRET_ACCESS_KEY: ${AWS_ACCOUNT_1_SECRET_ACCESS_KEY}
+      AWS_ACCOUNT_1_NAME: ${AWS_ACCOUNT_1_NAME:-CuentaPrincipal}
+
+      # AWS Credentials - Account 2
+      AWS_ACCOUNT_2_ACCESS_KEY_ID: ${AWS_ACCOUNT_2_ACCESS_KEY_ID}
+      AWS_ACCOUNT_2_SECRET_ACCESS_KEY: ${AWS_ACCOUNT_2_SECRET_ACCESS_KEY}
+      AWS_ACCOUNT_2_NAME: ${AWS_ACCOUNT_2_NAME:-CuentaSecundaria}
+
+      # AWS Config
+      AWS_REGIONS: ${AWS_REGIONS:-us-east-1,us-east-2}
+      AWS_DEV_TAG_START: ${AWS_DEV_TAG_START:-newautostart}
+      AWS_DEV_TAG_STOP: ${AWS_DEV_TAG_STOP:-newautostop}
+
+      # Optional
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+
+volumes:
+  postgres_data:

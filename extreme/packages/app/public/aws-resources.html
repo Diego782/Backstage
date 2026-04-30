@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Resources</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        button { padding: 5px 10px; margin: 2px; cursor: pointer; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>AWS Resources</h1>
+    <p><a href="/">← Back to Backstage</a></p>
+    
+    <h2>EC2 Instances</h2>
+    <div id="ec2-loading" class="loading">Loading...</div>
+    <div id="ec2-content"></div>
+    
+    <h2>RDS Instances</h2>
+    <div id="rds-loading" class="loading">Loading...</div>
+    <div id="rds-content"></div>
+    
+    <script>
+        async function loadEC2() {
+            try {
+                const response = await fetch('/api/aws-resources/ec2/instances');
+                const instances = await response.json();
+                document.getElementById('ec2-loading').style.display = 'none';
+                
+                if (instances && instances.length > 0) {
+                    let html = '<table><tr><th>ID</th><th>Name</th><th>Type</th><th>State</th><th>Actions</th></tr>';
+                    instances.forEach(instance => {
+                        html += `<tr>
+                            <td>${instance.instanceId}</td>
+                            <td>${instance.name || 'N/A'}</td>
+                            <td>${instance.instanceType}</td>
+                            <td>${instance.state}</td>
+                            <td>
+                                <button onclick="controlEC2('${instance.instanceId}', 'start')">Start</button>
+                                <button onclick="controlEC2('${instance.instanceId}', 'stop')">Stop</button>
+                            </td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('ec2-content').innerHTML = html;
+                } else {
+                    document.getElementById('ec2-content').innerHTML = '<p>No EC2 instances found</p>';
+                }
+            } catch (error) {
+                document.getElementById('ec2-loading').innerHTML = 'Error loading EC2 instances: ' + error.message;
+            }
+        }
+        
+        async function loadRDS() {
+            try {
+                const response = await fetch('/api/aws-resources/rds/instances');
+                const instances = await response.json();
+                document.getElementById('rds-loading').style.display = 'none';
+                
+                if (instances && instances.length > 0) {
+                    let html = '<table><tr><th>ID</th><th>Engine</th><th>Class</th><th>Status</th><th>Actions</th></tr>';
+                    instances.forEach(instance => {
+                        html += `<tr>
+                            <td>${instance.instanceId}</td>
+                            <td>${instance.engine}</td>
+                            <td>${instance.instanceClass}</td>
+                            <td>${instance.status}</td>
+                            <td>
+                                <button onclick="controlRDS('${instance.instanceId}', 'start')">Start</button>
+                                <button onclick="controlRDS('${instance.instanceId}', 'stop')">Stop</button>
+                            </td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('rds-content').innerHTML = html;
+                } else {
+                    document.getElementById('rds-content').innerHTML = '<p>No RDS instances found</p>';
+                }
+            } catch (error) {
+                document.getElementById('rds-loading').innerHTML = 'Error loading RDS instances: ' + error.message;
+            }
+        }
+        
+        async function controlEC2(instanceId, action) {
+            if (confirm(`Are you sure you want to ${action} instance ${instanceId}?`)) {
+                try {
+                    const response = await fetch(`/api/aws-resources/ec2/instances/${instanceId}/${action}`, { method: 'POST' });
+                    const data = await response.json();
+                    alert(data.message || `${action} command sent successfully`);
+                    loadEC2();
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            }
+        }
+        
+        async function controlRDS(instanceId, action) {
+            if (confirm(`Are you sure you want to ${action} instance ${instanceId}?`)) {
+                try {
+                    const response = await fetch(`/api/aws-resources/rds/instances/${instanceId}/${action}`, { method: 'POST' });
+                    const data = await response.json();
+                    alert(data.message || `${action} command sent successfully`);
+                    loadRDS();
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            }
+        }
+        
+        loadEC2();
+        loadRDS();
+    </script>
+</body>
+</html>
