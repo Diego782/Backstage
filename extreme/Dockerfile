@@ -1,5 +1,4 @@
 # Multi-stage Dockerfile for Backstage
-# Builds frontend and backend inside the container — no pre-build needed.
 
 # ---- Stage 1: Build ----
 FROM node:22-bookworm-slim AS build
@@ -13,19 +12,11 @@ RUN apt-get update && \
 USER node
 WORKDIR /app
 
-# Copy dependency files first for better layer caching
-COPY --chown=node:node .yarn ./.yarn
-COPY --chown=node:node .yarnrc.yml package.json yarn.lock backstage.json ./
-COPY --chown=node:node packages/backend/package.json ./packages/backend/package.json
-COPY --chown=node:node packages/app/package.json ./packages/app/package.json
-
-# Install all dependencies (including devDependencies for build)
-RUN yarn install --immutable
-
-# Copy source code
+# Copy everything needed for install + build
 COPY --chown=node:node . .
 
-# Build the backend (includes the bundled frontend)
+# Install dependencies and build
+RUN yarn install --no-immutable
 RUN yarn tsc
 RUN yarn build:backend
 
