@@ -9,6 +9,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends python3 g++ build-essential libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
+# Create app dir owned by node BEFORE switching user
+RUN mkdir -p /app && chown node:node /app
+
 USER node
 WORKDIR /app
 
@@ -28,6 +31,8 @@ ENV PYTHON=/usr/bin/python3
 RUN apt-get update && \
     apt-get install -y --no-install-recommends python3 g++ build-essential libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /app && chown node:node /app
 
 USER node
 WORKDIR /app
