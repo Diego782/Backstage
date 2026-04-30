@@ -23,14 +23,16 @@ organization:
 # AWS Configuration
 aws:
   region: us-east-1
-  # Multi-account configuration
-  accounts:
-    - name: ${AWS_ACCOUNT_1_NAME}
-      accessKeyId: ${AWS_ACCOUNT_1_ACCESS_KEY_ID}
-      secretAccessKey: ${AWS_ACCOUNT_1_SECRET_ACCESS_KEY}
-    - name: ${AWS_ACCOUNT_2_NAME}
-      accessKeyId: ${AWS_ACCOUNT_2_ACCESS_KEY_ID}
-      secretAccessKey: ${AWS_ACCOUNT_2_SECRET_ACCESS_KEY}
+  # Multi-account configuration (credentials are read from env vars by custom plugins)
+  # accounts:
+  #   - name: ${AWS_ACCOUNT_1_NAME}
+  #     accessKeyId: ${AWS_ACCOUNT_1_ACCESS_KEY_ID}
+  #     secretAccessKey: ${AWS_ACCOUNT_1_SECRET_ACCESS_KEY}
+  #     accountId: ${AWS_ACCOUNT_1_ID}
+  #   - name: ${AWS_ACCOUNT_2_NAME}
+  #     accessKeyId: ${AWS_ACCOUNT_2_ACCESS_KEY_ID}
+  #     secretAccessKey: ${AWS_ACCOUNT_2_SECRET_ACCESS_KEY}
+  #     accountId: ${AWS_ACCOUNT_2_ID}
   regions: ${AWS_REGIONS}
   devTags:
     start: ${AWS_DEV_TAG_START}
