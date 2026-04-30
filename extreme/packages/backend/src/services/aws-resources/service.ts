@@ -14,7 +14,6 @@ import {
   StartDBInstanceCommand,
   StopDBInstanceCommand,
   ListTagsForResourceCommand,
-  DBInstance,
 } from '@aws-sdk/client-rds';
 import {
   EC2Instance,
@@ -46,7 +45,7 @@ export class AwsResourcesService {
   private ec2Cache: CacheEntry<EC2Instance[]> | null = null;
   private rdsCache: CacheEntry<RDSInstance[]> | null = null;
 
-  constructor(config: Config, logger: LoggerService) {
+  constructor(_config: Config, logger: LoggerService) {
     this.logger = logger;
     this.accounts = this.loadAccounts();
 
@@ -167,7 +166,7 @@ export class AwsResourcesService {
         });
       });
     } catch (error) {
-      this.logger.error(`Error listing EC2 from ${account.name}/${region}:`, error);
+      this.logger.error(`Error listing EC2 from ${account.name}/${region}:`, error as Error);
     }
     return instances;
   }
@@ -221,7 +220,7 @@ export class AwsResourcesService {
         }
       }
     } catch (error) {
-      this.logger.error(`Error listing RDS from ${account.name}/${region}:`, error);
+      this.logger.error(`Error listing RDS from ${account.name}/${region}:`, error as Error);
     }
     return instances;
   }
@@ -308,7 +307,7 @@ export class AwsResourcesService {
             });
           });
         } catch (error) {
-          this.logger.error(`DEBUG: Error from ${account.name}/${region}:`, error);
+          this.logger.error(`DEBUG: Error from ${account.name}/${region}:`, error as Error);
         }
       }
     }

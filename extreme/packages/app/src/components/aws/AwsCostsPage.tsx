@@ -62,7 +62,6 @@ export const AwsCostsPage = () => {
   const [summary, setSummary] = useState<ResourceCostsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastFetched, setLastFetched] = useState<number>(0);
   const fetchedRef = React.useRef(false);
   const [startDate, setStartDate] = useState(() => {
     const date = new Date();
@@ -89,7 +88,6 @@ export const AwsCostsPage = () => {
 
       const data: ResourceCostsSummary = await response.json();
       setSummary(data);
-      setLastFetched(Date.now());
     } catch (err: any) {
       console.error('Error loading resource costs:', err);
       setError(err.message || 'Error loading costs');

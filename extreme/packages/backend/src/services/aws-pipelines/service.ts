@@ -56,7 +56,7 @@ export class AwsPipelinesService {
       this.logger.info(`Listed ${pipelines.length} pipelines`);
       return pipelines;
     } catch (error) {
-      this.logger.error('Error listing pipelines:', error);
+      this.logger.error('Error listing pipelines:', error as Error);
       throw error;
     }
   }
@@ -88,7 +88,7 @@ export class AwsPipelinesService {
         updated: response.updated,
       };
     } catch (error) {
-      this.logger.error(`Error getting pipeline state for ${pipelineName}:`, error);
+      this.logger.error(`Error getting pipeline state for ${pipelineName}:`, error as Error);
       throw error;
     }
   }
@@ -107,7 +107,7 @@ export class AwsPipelinesService {
         executionId: response.pipelineExecutionId || 'unknown',
       };
     } catch (error) {
-      this.logger.error(`Error starting pipeline ${pipelineName}:`, error);
+      this.logger.error(`Error starting pipeline ${pipelineName}:`, error as Error);
       throw error;
     }
   }
@@ -136,7 +136,7 @@ export class AwsPipelinesService {
       this.logger.info(`Listed ${executions.length} executions for pipeline: ${pipelineName}`);
       return executions;
     } catch (error) {
-      this.logger.error(`Error listing executions for ${pipelineName}:`, error);
+      this.logger.error(`Error listing executions for ${pipelineName}:`, error as Error);
       throw error;
     }
   }
@@ -178,7 +178,7 @@ export class AwsPipelinesService {
         logStreamName: build.logs.streamName,
       };
     } catch (error) {
-      this.logger.error(`Error getting build logs for ${buildId}:`, error);
+      this.logger.error(`Error getting build logs for ${buildId}:`, error as Error);
       throw error;
     }
   }

@@ -12,7 +12,6 @@ console.log('🟢 App.tsx: Loading app');
 
 // Create custom page extensions
 const awsResourcesPage = createExtension({
-  namespace: 'app',
   name: 'aws-resources',
   attachTo: { id: 'app/routes', input: 'routes' },
   output: [
@@ -32,7 +31,6 @@ const awsResourcesPage = createExtension({
 });
 
 const awsPipelinesPage = createExtension({
-  namespace: 'app',
   name: 'aws-pipelines',
   attachTo: { id: 'app/routes', input: 'routes' },
   output: [
@@ -52,7 +50,6 @@ const awsPipelinesPage = createExtension({
 });
 
 const awsCostsPage = createExtension({
-  namespace: 'app',
   name: 'aws-costs',
   attachTo: { id: 'app/routes', input: 'routes' },
   output: [

@@ -5,8 +5,6 @@ import {
   GetCostAndUsageCommand,
   GetCostForecastCommand,
   Granularity,
-  GroupDefinition,
-  Expression,
 } from '@aws-sdk/client-cost-explorer';
 import {
   CostData,
@@ -35,7 +33,7 @@ export class AwsCostsService {
   private accounts: AWSAccount[];
   private costsCache: CostsCacheEntry | null = null;
 
-  constructor(config: Config, logger: LoggerService) {
+  constructor(_config: Config, logger: LoggerService) {
     this.logger = logger;
     this.accounts = this.loadAccounts();
 
@@ -93,7 +91,7 @@ export class AwsCostsService {
       });
       this.logger.info(`EC2 costs for ${account.name}: ${[...costMap.entries()].map(([k, v]) => `${k}=$${v.toFixed(2)}`).join(', ') || 'none'}`);
     } catch (error) {
-      this.logger.error(`Error getting EC2 costs for ${account.name}:`, error);
+      this.logger.error(`Error getting EC2 costs for ${account.name}:`, error as Error);
     }
     return costMap;
   }
@@ -124,7 +122,7 @@ export class AwsCostsService {
       });
       this.logger.info(`RDS costs for ${account.name}: ${[...costMap.entries()].map(([k, v]) => `${k}=$${v.toFixed(2)}`).join(', ') || 'none'}`);
     } catch (error) {
-      this.logger.error(`Error getting RDS costs for ${account.name}:`, error);
+      this.logger.error(`Error getting RDS costs for ${account.name}:`, error as Error);
     }
     return costMap;
   }

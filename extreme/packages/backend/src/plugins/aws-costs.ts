@@ -12,14 +12,13 @@ export default createBackendPlugin({
         http: coreServices.httpRouter,
         logger: coreServices.logger,
         config: coreServices.rootConfig,
-        httpAuth: coreServices.httpAuth,
       },
-      async init({ http, logger, config, httpAuth }) {
+      async init({ http, logger, config }) {
         const router = await createRouter({
           logger,
           config,
         });
-        http.use(router);
+        http.use(router as any);
         http.addAuthPolicy({
           path: '/health',
           allow: 'unauthenticated',

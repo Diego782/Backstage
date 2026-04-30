@@ -19,9 +19,7 @@ services:
       retries: 5
 
   backstage:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: backstage:latest
     restart: unless-stopped
     depends_on:
       postgres:
@@ -29,28 +27,23 @@ services:
     ports:
       - '7007:7007'
     environment:
-      # PostgreSQL
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_USER: backstage
       POSTGRES_PASSWORD: backstage
 
-      # AWS Credentials - Account 1
       AWS_ACCOUNT_1_ACCESS_KEY_ID: ${AWS_ACCOUNT_1_ACCESS_KEY_ID}
       AWS_ACCOUNT_1_SECRET_ACCESS_KEY: ${AWS_ACCOUNT_1_SECRET_ACCESS_KEY}
       AWS_ACCOUNT_1_NAME: ${AWS_ACCOUNT_1_NAME:-CuentaPrincipal}
 
-      # AWS Credentials - Account 2
       AWS_ACCOUNT_2_ACCESS_KEY_ID: ${AWS_ACCOUNT_2_ACCESS_KEY_ID}
       AWS_ACCOUNT_2_SECRET_ACCESS_KEY: ${AWS_ACCOUNT_2_SECRET_ACCESS_KEY}
       AWS_ACCOUNT_2_NAME: ${AWS_ACCOUNT_2_NAME:-CuentaSecundaria}
 
-      # AWS Config
       AWS_REGIONS: ${AWS_REGIONS:-us-east-1,us-east-2}
       AWS_DEV_TAG_START: ${AWS_DEV_TAG_START:-newautostart}
       AWS_DEV_TAG_STOP: ${AWS_DEV_TAG_STOP:-newautostop}
 
-      # Optional
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
 
 volumes:
