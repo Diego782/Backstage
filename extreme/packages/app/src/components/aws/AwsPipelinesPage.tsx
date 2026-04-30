@@ -62,6 +62,7 @@ export const AwsPipelinesPage = () => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPipeline, setSelectedPipeline] = useState<PipelineDetails | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -69,11 +70,19 @@ export const AwsPipelinesPage = () => {
   const loadPipelines = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch(`${API_BASE}/pipelines`);
       const data = await response.json();
-      setPipelines(data);
+      if (!response.ok) {
+        setError(data.error || 'Failed to load pipelines');
+        setPipelines([]);
+        return;
+      }
+      setPipelines(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading pipelines:', error);
+      setError('Could not connect to the pipelines API');
+      setPipelines([]);
     } finally {
       setLoading(false);
     }
@@ -167,6 +176,11 @@ export const AwsPipelinesPage = () => {
         {message && (
           <Box mb={2}>
             <Alert severity="success">{message}</Alert>
+          </Box>
+        )}
+        {error && (
+          <Box mb={2}>
+            <Alert severity="error">{error}</Alert>
           </Box>
         )}
         <Box display="flex" mb={2} style={{ gap: '16px' }}>

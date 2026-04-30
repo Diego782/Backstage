@@ -91,11 +91,13 @@ function useResourceData() {
         fetch(`${API_BASE}/rds/instances${refreshParam}`),
       ]);
       const [ec2Data, rdsData] = await Promise.all([ec2Res.json(), rdsRes.json()]);
-      setEC2Instances(ec2Data);
-      setRDSInstances(rdsData);
+      setEC2Instances(Array.isArray(ec2Data) ? ec2Data : []);
+      setRDSInstances(Array.isArray(rdsData) ? rdsData : []);
       setLastFetched(Date.now());
     } catch (error) {
       console.error('Error loading resources:', error);
+      setEC2Instances([]);
+      setRDSInstances([]);
     } finally {
       setLoading(false);
     }
