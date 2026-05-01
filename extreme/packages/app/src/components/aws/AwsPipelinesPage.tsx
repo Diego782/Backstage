@@ -42,7 +42,7 @@ interface PipelineDetails {
   }>;
 }
 
-const API_BASE = 'http://localhost:7007/api/aws-pipelines';
+const API_BASE = '/api/aws-pipelines';
 
 const getStatusColor = (status: string) => {
   switch (status) {

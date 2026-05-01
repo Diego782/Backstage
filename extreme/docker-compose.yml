@@ -33,6 +33,9 @@ services:
       POSTGRES_USER: backstage
       POSTGRES_PASSWORD: backstage
 
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:7007}
+      BACKEND_BASE_URL: ${BACKEND_BASE_URL:-http://localhost:7007}
+
       AWS_ACCOUNT_1_ACCESS_KEY_ID: ${AWS_ACCOUNT_1_ACCESS_KEY_ID}
       AWS_ACCOUNT_1_SECRET_ACCESS_KEY: ${AWS_ACCOUNT_1_SECRET_ACCESS_KEY}
       AWS_ACCOUNT_1_NAME: ${AWS_ACCOUNT_1_NAME:-CuentaPrincipal}

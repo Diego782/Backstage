@@ -40,7 +40,7 @@ interface ResourceCostsSummary {
   resources: ResourceCostItem[];
 }
 
-const API_BASE = 'http://localhost:7007/api/aws-costs';
+const API_BASE = '/api/aws-costs';
 
 const getStateColor = (state: string): 'primary' | 'default' | 'secondary' => {
   switch (state) {

@@ -53,7 +53,7 @@ interface RDSInstance {
   autoStopHour?: string;
 }
 
-const API_BASE = 'http://localhost:7007/api/aws-resources';
+const API_BASE = '/api/aws-resources';
 
 const getStateColor = (state: string) => {
   switch (state) {
