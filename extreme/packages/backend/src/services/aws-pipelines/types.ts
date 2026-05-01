@@ -10,6 +10,8 @@ export interface Pipeline {
   name: string;
   created?: Date;
   updated?: Date;
+  account?: string;
+  region?: string;
 }
 
 export interface PipelineState {
