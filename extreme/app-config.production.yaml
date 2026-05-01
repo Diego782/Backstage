@@ -4,6 +4,8 @@ app:
 backend:
   baseUrl: ${BACKEND_BASE_URL}
   listen: ':7007'
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
 
   csp:
     upgrade-insecure-requests: false
