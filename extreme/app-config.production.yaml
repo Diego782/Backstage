@@ -23,7 +23,8 @@ backend:
 
 auth:
   providers:
-    guest: {}
+    guest:
+      dangerouslyAllowSignInWithoutUserInSessionStore: true
 
 integrations:
   github: []
