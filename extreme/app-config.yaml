@@ -1,6 +1,6 @@
 app:
   title: Scaffolded Backstage App
-  baseUrl: http://localhost:3000
+  baseUrl: http://18.117.255.147:7007
 
   # Enable all packages by default, this will discover packages from packages/app/package.json
   packages: all
@@ -45,7 +45,7 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  baseUrl: http://localhost:7007
+  baseUrl: http://18.117.255.147:7007
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
