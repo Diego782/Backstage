@@ -13,6 +13,9 @@ backend:
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
 
+  csp:
+    upgrade-insecure-requests: false
+
   # config options: https://node-postgres.com/apis/client
   database:
     client: pg
